@@ -11,6 +11,11 @@ server {
   }
 
   location / {
+
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }
+
     # First attempt to serve request as file, then
     # as directory, then fall back to redirecting to index.html
     try_files $uri $uri/ @root;
